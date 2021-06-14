@@ -1,6 +1,5 @@
 require 'json'
 require 'smtpapi'
-require 'mimemagic'
 
 module SendGrid
   class Mail
@@ -91,7 +90,9 @@ module SendGrid
     end
 
     def add_attachment(path, name = nil)
-      mime_type = MimeMagic.by_path(path)
+      mime_type = {}
+      mime = MIME::Types.type_for(File.extname(path).to_s.downcase)
+      mime_type = { "@mediatype": mime[0].media_type, "@subtype": mime[0].sub_type, "@type": mime[0].content_type }.to_hash if mime.present?
       file = Faraday::UploadIO.new(path, mime_type)
       name ||= File.basename(file)
       attachments << {file: file, name: name}
@@ -110,7 +111,9 @@ module SendGrid
     end
 
     def add_content(path, cid)
-      mime_type = MimeMagic.by_path(path)
+      mime_type = {}
+      mime = MIME::Types.type_for(File.extname(path).to_s.downcase)
+      mime_type = { "@mediatype": mime[0].media_type, "@subtype": mime[0].sub_type, "@type": mime[0].content_type }.to_hash if mime.present?
       file = Faraday::UploadIO.new(path, mime_type)
       name ||= File.basename(file)
       contents << {file: file, cid: cid, name: name}

@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.7] - 2021-06-12 ##
+## Fixed
+removed mimemagic gem dependency
+
 ## [1.1.6] - 2015-11-26 ##
 ## Added
 Support for cc_name and bcc_name via [#31](https://github.com/sendgrid/sendgrid-ruby/pull/31)
